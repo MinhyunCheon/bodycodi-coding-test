@@ -22,9 +22,15 @@ public class UserRepository {
 
 
     public int insert(UserDto user) {
-        int re = this.jdbcTemplate.update("사용자 정보를 저장하는 쿼리 작성", user.getUsername(), user.getPassword());
+//        int re = this.jdbcTemplate.update("사용자 정보를 저장하는 쿼리 작성", user.getUsername(), user.getPassword());
+    	// 2022-01-26
+    	int re = this.jdbcTemplate.update("INSERT INTO USERS (USER_NAME, PASSWORD) VALUES (?, ?)", user.getUsername(), user.getPassword());
+    	
         if (re == 1) {
-            int userId =1 ;// 저장한 사용자의 아이디 가지고 오기
+//            int userId =1 ;// 저장한 사용자의 아이디 가지고 오기
+        	// 2022-01-26, 중복에 대한 체크는 별도의 로직에서 처리하는 것이 맞다고 판단해 추가하지 않았습니다.
+        	int userId = this.jdbcTemplate.queryForObject("SELECT ID FROM USERS WHERE USER_NAME = ? AND PASSWORD = ?", new Object[]{user.getUsername(), user.getPassword()}, Integer.class);
+        	
             return userId;
         } else {
             throw new RuntimeException("inert error");

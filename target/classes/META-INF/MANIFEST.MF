@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: code-test
+Implementation-Version: 0.1.0
+Built-By: Cheon
+Implementation-Vendor-Id: com.catchsecu
+Build-Jdk: 1.8.0_271
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/code-test
+Created-By: Maven Integration for Eclipse
+

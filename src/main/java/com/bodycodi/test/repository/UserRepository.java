@@ -24,16 +24,26 @@ public class UserRepository {
     public int insert(UserDto user) {
 //        int re = this.jdbcTemplate.update("사용자 정보를 저장하는 쿼리 작성", user.getUsername(), user.getPassword());
     	// 2022-01-26
-    	int re = this.jdbcTemplate.update("INSERT INTO USERS (USER_NAME, PASSWORD) VALUES (?, ?)", user.getUsername(), user.getPassword());
+    	String sql = "INSERT INTO USERS (USER_NAME, PASSWORD) VALUES (?, ?)";
+    	int re = this.jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
+    	// 2022-01-26, 중복 확인 추가
+    	// 아이디가 아닌 이름이기 때문에 중복 가능
+//    	int userCnt = this.jdbcTemplate.queryForObject("SELECT COUNT(*) FROM USERS WHERE USER_NAME = ?", new Object[]{user.getUsername()}, Integer.class);
+//    	if(userCnt == 0) {
+//    		re = this.jdbcTemplate.update("INSERT INTO USERS (USER_NAME, PASSWORD) VALUES (?, ?)", user.getUsername(), user.getPassword());
+//    	}    		
     	
         if (re == 1) {
 //            int userId =1 ;// 저장한 사용자의 아이디 가지고 오기
-        	// 2022-01-26, 중복에 대한 체크는 별도의 로직에서 처리하는 것이 맞다고 판단해 추가하지 않았습니다.
-        	int userId = this.jdbcTemplate.queryForObject("SELECT ID FROM USERS WHERE USER_NAME = ? AND PASSWORD = ?", new Object[]{user.getUsername(), user.getPassword()}, Integer.class);
+        	// 2022-01-26, 이름, 비밀번호 모두 동일한 정보를 저장한 경우 예외 발생
+        	// id 기준 내림차순 정렬하여 가장 위의 데이터 id 반환
+        	sql = "SELECT ID FROM USERS WHERE USER_NAME = ? AND PASSWORD = ? ORDER BY ID DESC LIMIT 1";
+        	int userId = this.jdbcTemplate.queryForObject(sql, new Object[]{user.getUsername(), user.getPassword()}, Integer.class);
         	
             return userId;
         } else {
-            throw new RuntimeException("inert error");
+//            throw new RuntimeException("inert error");
+        	throw new RuntimeException("insert error");	// 2022-01-26
         }
     }
 

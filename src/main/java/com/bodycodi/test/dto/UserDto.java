@@ -33,4 +33,11 @@ public class UserDto {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    // 2022-01-27
+	@Override
+	public String toString() {
+		return "UserDto [id=" + id + ", username=" + username + ", password=" + password + "]";
+	}
+    
 }

@@ -32,6 +32,14 @@
             <version>3.23.1</version>
         </dependency>
 
+		<!-- 2022-01-27 -->
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt</artifactId>
+		    <version>0.9.1</version>
+		</dependency>
+
     </dependencies>
 
     <properties>

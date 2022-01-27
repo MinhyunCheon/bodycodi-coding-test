@@ -26,4 +26,11 @@ public class TokenDto {
     public void setToken(String token) {
         this.token = token;
     }
+
+    // 2022-01-27
+	@Override
+	public String toString() {
+		return "TokenDto [id=" + id + ", token=" + token + "]";
+	}
+    
 }

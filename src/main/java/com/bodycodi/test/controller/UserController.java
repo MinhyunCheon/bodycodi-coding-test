@@ -4,6 +4,13 @@ import com.bodycodi.test.dto.TokenDto;
 import com.bodycodi.test.dto.UserDto;
 import com.bodycodi.test.service.UserService;
 
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.time.Duration;
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
@@ -43,14 +50,38 @@ public class UserController {
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity<TokenDto> login(@RequestBody UserDto userDto) {
-        boolean isLogin = true;  // 로그인 체크
+    	// 2022-01-27
+        int userId = userService.loginUser(userDto);
+        boolean isLogin = userId != 0 ? true : false;
+        
+//        boolean isLogin = true;  // 로그인 체크
         TokenDto tokenDto = new TokenDto(); // 인증 토크 전달
+        
         if(isLogin) {
+        	// 2022-01-27
+        	tokenDto.setId(userId);
+            tokenDto.setToken(makeJwtToken(userId, userDto.getUsername()));
+            
             return ResponseEntity.status(HttpStatus.OK).body(tokenDto);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(tokenDto);
         }
 
+    }
+    
+    // 2022-01-27, 토큰 사용 경험이 없어 사이트 참조했습니다.(https://shinsunyoung.tistory.com/110)
+    public String makeJwtToken(int id, String username) {
+        Date now = new Date();
+
+        return Jwts.builder()
+            .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // (1)
+            .setIssuer("redblue") // (2)
+            .setIssuedAt(now) // (3)
+            .setExpiration(new Date(now.getTime() + Duration.ofMinutes(30).toMillis())) // (4)
+            .claim("id", id) // (5)
+            .claim("username", username)
+            .signWith(SignatureAlgorithm.HS256, "secret") // (6)
+            .compact();
     }
 
     /**

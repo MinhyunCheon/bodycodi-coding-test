@@ -18,8 +18,17 @@ public class UserService {
     }
 
     public UserDto findUser(String username) {
-        return null;
+        return userRepository.findUser(username);	// 2022-01-27
     }
 
+    /**
+     * 2022-01-27
+     * 로그인
+     * @param userDto
+     * @return id
+     */
+    public int loginUser(UserDto userDto) {
+    	return userRepository.loginUser(userDto);
+    }
 
 }

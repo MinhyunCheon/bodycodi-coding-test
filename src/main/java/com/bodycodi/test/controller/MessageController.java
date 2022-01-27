@@ -24,6 +24,9 @@ public class MessageController {
         if(StringUtils.isEmpty(messageDto.getSender()) || StringUtils.isEmpty(messageDto.getRecipient()) || messageDto.getContent() == null) {
             throw new RuntimeException("Sender, recepient, and content required");
         }
+        
+        System.out.println("post messages exec");
+        System.out.println("post messages user : " + userDto);
 
         String id = "";
         Map<String,Object> re = new HashMap<>();

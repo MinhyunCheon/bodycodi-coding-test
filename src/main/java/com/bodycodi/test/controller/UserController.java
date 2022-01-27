@@ -60,7 +60,8 @@ public class UserController {
         if(isLogin) {
         	// 2022-01-27
         	tokenDto.setId(userId);
-            tokenDto.setToken(makeJwtToken(userId, userDto.getUsername()));
+        	tokenDto.setToken(makeJwtToken(userId, userDto.getUsername()));
+        	TokenController.getInstence().setToken(tokenDto);
             
             return ResponseEntity.status(HttpStatus.OK).body(tokenDto);
         } else {
